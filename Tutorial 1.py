@@ -6,12 +6,16 @@ Created on Mon Jul 24 00:49:15 2023
 """
 
 
+# 24JUL2023
+
 import numpy as np
 import scipy.signal as signal
 import matplotlib.pyplot as plt
 import os
 import My_List_Of_Funcs as mf
 
+os.getcwd()
+# 'D:\\DS\\Python Tutorial'
 
 # Topics - 
 # 1. Data types -  list , tuple, dictionary
@@ -205,43 +209,205 @@ Dict.values()
 
 
 
+# 28JUL2023
+
+
+#############################################################
+# Main topics to remember/learn in Python :
+# 
+#    1. Data types/ Data structure : list, array, int, float, string, tuple, dict, plot
+#    2. Control flow : if-else, forloop, while etc
+#    3. Functions/class : built-in functions, functions from imported module, User Defined Functions - def, lambda
+# 
+#    4. Interaction among 1, 2, and 3
+#############################################################
+
+
+
+
+
+def my_sine_curve(x):
+    temp = np.sin(x)
+    return temp
+
+# Computation
+x = np.linspace(- np.pi, np.pi, 100) # Iterable
+sin_vec = np.array(list(map(my_sine_curve, x)))
+
+# Plot
+plt.plot(x, sin_vec)
+plt.plot(x+10, 0.25 + sin_vec)
+
+
+
+
+
+def my_curve(a):
+    
+    # Computation
+    x = np.linspace(- np.pi, np.pi, 100) # Iterable
+    sin_vec = np.array(list(map(my_sine_curve, x)))
+
+    # Plot
+    plt.plot(x, a + sin_vec)
+    # plt.plot(x, a + sin_vec, label= "a = " + str(a))
+    # plt.legend()
+    
+my_curve(2)
+
+
+
+l = np.array([1, 2, 4, 6])
+
+
+
+for i in l:
+    my_curve(a = i)
+    
+    plt.show()
+plt.legend(l) 
+
+   
+# 07AUG2023 Tutorial - Random number generation
+
+# Random Experiment - {a, b, c, d}
+# Random variable : 
+    # Discrete - Coin toss (H, T or 0, 1), die throw (1, 2, 3, ..., 6) ;
+    # Continuous - range/interval ;
+    
+# How many random numbers should be generated ?
+
+n = 2048 # number of samples
+
+
+## Option 1 - using Size (Advanced) ----------------------
+# Drawing sample from uniform distribution
+y = np.random.uniform(-5, 5, size=n)
+
+
+# Drawing sample from normal distribution
+y2 = np.random.normal(loc=0, scale=0.01, size=n)
+
+
+# plotting
+plt.plot(y)
+plt.show()
+plt.hist(y)
 
 
 
 
 
 
+plt.plot(y2)
+plt.show()
+plt.hist(y2)
+
+
+# Drawing sample from bernoulli distribution
+y3 = np.random.binomial(n=1, p=0.5, size=n)
+plt.hist(y3)
+plt.scatter(y3)
 
 
 
+## Option 2 - Detailed method ----------------------
+time_list = []
+n = 2049
+
+for i in range(0, n):
+    time_list.append(0) # Initialization to zero
+    
+
+time_array = np.array(time_list)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Use of np.zeroes
+time_array_v2 = np.zeros(n)
  
 
+# Looping over time array
+for i in range(0, n): # 0, 1, 2, ... 2048
+    # time_array_v2[i] = np.random.uniform(low=-5, high=5, size=1)
+    time_array_v2[i] = np.random.normal(loc=0, scale=0.01, size=1)
+
+time_array_v2
+
+
+## Option 3 - Without initialization ----------------
+time_list = []
+n = 2049
+
+for i in range(0, n):
+    temp_rn = np.random.uniform(low=0, high=1, size=1)
+    time_list.append(temp_rn) # Initialization to zero
+    
+
+time_array = np.array(time_list)
+
+
+
+# @nd Step - Calculating Empirical variance/mean/sd
+
+
+# Mean - for loop
+empty_value = 0
+
+for i in range(0, n):
+    empty_value = empty_value + time_array[i]
+
+
+# Mu formula
+mu = empty_value[0]/n
+print(mu) # Answer 1
+
+
+# SD formula
+empty_sd = 0
+
+for i in range(0,n):
+    empty_sd = empty_sd + (time_array[i] - mu)**2
+
+
+sigma = ( empty_sd[0]/n )**0.5
+print(sigma) # Answer 2
 
 
 
 
+
+
+# y = F(voltage) # System dependent on Voltage
+
+# F - complicated function
+
+
+# Q - Input Noisy voltage
+# How does the output varry?
+
+def F(x):
+    return np.sin(x)
+
+n = 10000
+random_noise = np.random.normal(loc=0, scale=0.01, size=n)
+mean_voltage = 10
+
+
+empty_output=[]
+for i in range(0, n):
+    
+    temp_output = F(mean_voltage + random_noise[i])
+    
+    empty_output.append(temp_output)
+    
+
+
+# Simplest form Monte Carlo Simulation
+empty_output
+plt.hist(empty_output)
+
+np.average(empty_output) #mu
+np.std(empty_output) #sd
 
 
 
