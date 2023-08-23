@@ -411,4 +411,300 @@ np.std(empty_output) #sd
 
 
 
+# Complex Dot product
+
+a = np.array([complex(0,1),2,3])
+b = np.array([4, 2, 5])
+
+
+np.vdot(b, a)
+
+
+# Sinusoidal time series
+n=1000
+f = 0.2
+s = np.array(list(map(lambda t: np.sin(2*np.pi*f*t), range(0,n))))
+plt.plot(s)
+
+noise_s = s + np.random.normal(size=n)
+plt.plot(noise_s)
+
+
+
+f, Pxx_den = signal.periodogram(noise_s)
+plt.semilogy(f, Pxx_den)
+plt.xlabel('frequency [Hz]')
+plt.ylabel('PSD [V**2/Hz]')
+plt.show()
+
+
+
+
+
+
+# FFT ------------------------------
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+
+# sampling rate
+sr = 2000
+
+# sampling interval
+ts = 1.0/sr
+
+t = np.arange(0,1,ts)
+
+
+
+
+freq = 1.
+x = 3*np.sin(2*np.pi*freq*t)
+
+freq = 4
+x += np.sin(2*np.pi*freq*t)
+
+freq = 7   
+x += 0.5* np.sin(2*np.pi*freq*t)
+
+plt.figure(figsize = (8, 6))
+plt.plot(t, x, 'r')        # plot of the raw signal
+plt.ylabel('Amplitude')
+
+plt.show() 
+
+
+# Applying FFT
+from numpy.fft import fft, ifft
+
+X = fft(x)
+N = len(X)
+n = np.arange(N)
+T = N/sr
+freq = n/T 
+
+
+plt.stem(freq, 2*np.abs(X)/N, 'b', markerfmt=" ", basefmt="-b")
+plt.xlabel('Freq (Hz)')
+plt.ylabel('FFT Amplitude |X(freq)|')
+plt.xlim(0, 10)
+
+    
+    
+    
+# Applying PSD ---------------------
+fs = 1000.0 # 1 kHz sampling frequency
+F1 = 10 # First signal component at 10 Hz
+F2 = 60 # Second signal component at 60 Hz
+T = 10 # 10s signal length
+N0 = -10 # Noise level (dB)
+
+
+import numpy as np
+
+t = np.r_[0:T:(1/fs)] # Sample times
+
+# Two Sine signal components at frequencies F1 and F2.
+signal = np.sin(2 * F1 * np.pi * t) + np.sin(2 * F2 * np.pi * t) 
+
+# White noise with power N0
+signal += np.random.randn(len(signal)) * 10**(N0/20.0) 
+
+plt.plot(signal)
+plt.xlim(0,100)
+
+
+fft_sig = fft(signal)
+N = len(fft_sig)
+n = np.arange(N)
+freq = n/T 
+
+
+
+plt.stem(freq, 2*np.abs(fft_sig)/N, 'b', markerfmt=" ", basefmt="-b")
+plt.xlabel('Freq (Hz)')
+plt.ylabel('FFT Amplitude |X(freq)|')
+plt.xlim(0, 100)
+
+
+
+import scipy.signal
+
+# f contains the frequency components
+# S is the PSD
+(f, S) = scipy.signal.periodogram(signal, fs, scaling='density')
+
+
+
+import matplotlib.pyplot as plt
+
+plt.semilogy(f, S)
+plt.ylim([1e-7, 1e2])
+plt.xlim([0,100])
+plt.xlabel('frequency [Hz]')
+plt.ylabel('PSD [V**2/Hz]')
+plt.show()
+
+
+
+
+
+# Square wave -----------------------
+from scipy import signal
+
+import matplotlib.pyplot as plt
+
+import numpy as np
+
+ 
+
+# Sampling rate 1000 hz / second
+
+t = np.linspace(0, 1, 1000, endpoint=True)
+
+ 
+
+# Plot the square wave signal
+freq = 10
+
+plt.plot(t, signal.square(2 * np.pi * freq * t))
+
+ 
+
+# Give a title for the square wave plot
+
+plt.title('Sqaure wave - {} Hz sampled at 1000 Hz /second'.format(freq))
+
+ 
+
+# Give x axis label for the square wave plot
+
+plt.xlabel('Time')
+
+ 
+
+# Give y axis label for the square wave plot
+
+plt.ylabel('Amplitude')
+
+
+
+
+
+# Square Wave via for-loop -----------
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+freq = 1000 # 1KHz i.e. 1000 cycles per sec
+ts = 1 # 1 sec
+
+# One complete cycle
+n = freq * ts # total data points in one complete cycle/one complete period
+
+
+# Specifications
+# starting value + 1 at 1000, then 0 upto 501, -1 at 500, then 0 again 499 to 1
+
+# time_frame=np.linspace(1, 1000)
+
+max_count_value = n
+
+sqare_graph = []
+trigger_graph = []
+counter = max_count_value
+
+for i in np.arange(n):
+    
+    
+    # trigger graph condition
+    if(counter == max_count_value):
+        trigger_graph.append(1)
+    elif(counter == 0.5*max_count_value):
+       trigger_graph.append(-1)
+    else:
+        trigger_graph.append(0)
+        
+    
+    
+    # Square graph condition
+    if(counter > 0.5*max_count_value):
+        sqare_graph.append(1)
+    else:
+        sqare_graph.append(0)
+    
+
+    counter = counter - 1
+        
+    
+  
+plt.plot(trigger_graph,marker='o', color='red')
+plt.plot(sqare_graph,'--', color='blue')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
