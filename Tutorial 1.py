@@ -647,11 +647,158 @@ plt.plot(sqare_graph,'--', color='blue')
 
 
 
+# Sqaure Waves etc via Class ----------------
+
+class my_car:
+    name = "Polo"
+    brand = "VW"
+    
+    def __init__(self, reg_no):
+        self.reg_no = reg_no
+    
+
+
+    
+Arijit = my_car("2089") # Instansiate of my_car
+
+Monojit = my_car("2090") # Instantiate of my_car
+
+
+
+Arijit.reg_no
+Monojit.brand
+
+
+
+# Python tutorial 26AUG2023
+
+
+#############################################################
+# Main topics to remember/learn in Python :
+# 
+#    1. Data types/ Data structure : list, array, int, float, string, tuple, dict, plot
+#    2. Control flow : Branching : if-else, iteration : forloop, while etc
+#    3. Functions/class : built-in functions, functions from imported module, User Defined Functions - def, lambda
+# 
+#    4. Interaction among 1, 2, and 3
+#############################################################
+
+
+
+# List/Array
+# type - this is a very important testing function
+
+l1 = [1, 2,"AL", True] #
+l2 = ["k", 1 , l1] 
+
+# iterator - this means you can run for-loop/while-loop through it
+
+for x in l1: # x will go into l1 and pick up its elements one by one
+    print(x)
 
 
 
 
+# _______________________________________________________
 
+length = len(l1)
+my_iter= np.arange(length)
+
+
+for x in my_iter:
+    print(l1[x])
+
+# LOOP - replacement of repetitions
+
+
+# _______________________________________________________
+
+# Q : write a program which will take a list as input and print the values which are integer/bool.
+
+Input_list = [1, 10, "AK", "OOP", True, None, 19, 45] #Input list
+
+
+for l in Input_list:
+    if isinstance(l, int):
+        print("These are int-", l)
+        
+    else:
+        print("These are not int - ",l)
+
+        
+# Q : write a program that will take an integer as input and if it's non-prime, provide the factors.
+
+
+
+def list_of_prime_factors(n=48):
+    
+    empty_list = []
+    
+    
+    # Print the number of two's that divide n
+    while n % 2 == 0:
+        empty_list.append(2)
+        n = n/2
+        
+    
+    
+    # n ---- n must be ODD number at this step
+    
+    my_list_odds = range(3, int(np.sqrt(n))+1,  2)
+    
+    for i in my_list_odds:
+        
+        while n % i == 0:
+            empty_list.append(i)
+            n = n/i
+            
+            
+    
+    if n > 2:
+        empty_list.append(n)
+    
+    
+
+    return empty_list
+
+
+
+
+def is_it_a_prime(n):
+    
+    if len(list_of_prime_factors(n)) == 1:
+        return True
+        
+    else:
+        return False
+    
+
+
+
+Input_integer = 19
+
+if is_it_a_prime(Input_integer):
+    print("It's a prime = ", Input_integer)
+    
+else:
+    i = 1
+    empty_factors = []
+    while i <= Input_integer:
+        if Input_integer % i == 0:
+            empty_factors.append(i)
+        i = i + 1
+            
+        
+print(empty_factors)
+
+
+
+# Infinite loop
+
+w = 5
+while w <=10:
+    print(w)
+    w = w+ 1
 
 
 
