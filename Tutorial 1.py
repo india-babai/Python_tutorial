@@ -803,10 +803,45 @@ while w <=10:
 
 
 
+## Python tutorial 27AUG2023
+
+#############################################################
+# Main topics to remember/learn in Python :
+# 
+#    1. Data types/ Data structure : list, array, int, float, string, tuple, dict, plot
+#    2. Control flow : Branching : if-else, iteration : forloop, while etc
+#    3. Functions/class : built-in functions, functions from imported module, User Defined Functions - def, lambda
+# 
+#    4. Interaction among 1, 2, and 3
+#############################################################
 
 
 
+# Q : Write a function, which takes an integer as input , and gives the Fibonacci sequence up to it.
 
+# Fibonacci : 1, 1, 2, 3, 5, 8, 13, 21, 34, ....
+# f (1) =1
+#  f(2) = 1
+#  f(3) = f(1) + f(2)
+#  f(n) = f(n-1) + f(n-2) # recursion equation
+
+
+def my_fibo(input_integer=10):
+    
+    empty_list = [1,1]
+    
+    for x in np.arange(input_integer):
+        if x > 1:
+            temp = empty_list[x-1] + empty_list[x-2]
+            empty_list.append(temp)
+        
+    
+    return temp
+    
+    
+    
+my_fibo(20)   
+     
 
 
 
