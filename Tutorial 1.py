@@ -919,8 +919,68 @@ Volu.rong
 
 
 
+# Clock
 
 
+class classVCO:
+    def __init__(self, freq, Ts):
+        self.freq = freq
+        self.Ts = Ts
+        self.maxCountVal = self.freq * self.Ts
+        self.countVal = self.maxCountVal
+     
+        
+     
+        
+    def VCOstep(self):
+        c = self.countVal
+        m = self.maxCountVal
+        
+        if c == 0.5*m:
+            edgeFlag = -1
+            
+        elif  c == m:
+            edgeFlag = 1
+            
+        else:
+            edgeFlag = 0
+            
+        self.countVal = self.countVal - 1
+        
+        
+        
+        # Resetting the countval
+        if self.countVal == 0:
+            self.countVal = m
+            
+        return edgeFlag   
+
+
+
+
+    
+
+s1 = classVCO(100,1) #Initializing classVCO
+
+
+tt = []
+pulse = []
+count = []
+
+for i in range(0,100,1):        
+    tt.append(i)
+    pulse.append(s1.VCOstep())
+    count.append(s1.countVal)
+    
+    
+    # print("Time, countval , pulse : ",i, ", ", s1.countVal, ",", s1.VCOstep())
+
+        
+    
+plt.plot(tt, pulse, marker='o')
+     
+             
+      
 
 
 
