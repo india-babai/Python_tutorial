@@ -846,30 +846,74 @@ my_fibo(20)
 
 
 
+# PYTHON TUTORIAL 29AUG2023
+
+#############################################################
+# Main topics to remember/learn in Python :
+# 
+#    1. Data types/ Data structure : list, array, int, float, string, tuple, dict, plot
+#    2. Control flow : Branching : if-else, iteration : forloop, while etc
+#    3. Functions/class : built-in functions, functions from imported module, User Defined Functions - def, lambda
+# 
+#    4. Interaction among 1, 2, and 3
+#############################################################
 
 
 
 
+import numpy as np
+# C drive  --- > numpy python script
+
+
+# Defining a function
+def my_func(b, a=10):
+    return a+b
+
+my_func(2,5) # Calling a function
 
 
 
+# _____________________________CLASS__________________________________________
+
+
+# defining step
+class DOG: # Abstract concept
+
+# Method defining - it's same as function but, when called from inside a class, we call it a 'Method'
+    def __init__(self, name, legs=4): #this is a special method
+        self.naam = name
+        self.paa = legs
+        
+        
+# 
+    def color(self, col):
+        self.rong = col
 
 
 
+# def ---> methods
+# self.somethhing ---> attribute of the class.
 
 
 
+# Creating an instance of 'DOG' class - instantiate/initialize
+# Volu = DOG()
+ 
+Volu = DOG("Volu Doggy")
+
+Golu = DOG("Golu Doggo", 4)
+
+
+# Before color competetion
+
+Volu.color("red")
+Volu.rong
 
 
 
-
-
-
-
-
-
-
-
+# After color competetion
+Volu.color("Blue")
+Volu.rong
 
 
 
