@@ -123,30 +123,31 @@ def facto(n):
 
 
 
-# Clock 29AUG2023
+# Clock 29AUG2023 (By Rehana SULTANA)
 
 # -*- coding: utf-8 -*-
 
-
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 
-
-class classVCO:
-    def __init__(self, freq, Ts):
+class classVCO: 
+    
+    def __init__(self,freq,Ts):
         self.freq = freq
         self.Ts = Ts
         self.maxCountVal = self.freq * self.Ts
         self.countVal = self.maxCountVal
-     
+        self.noise = 0
         
      
-        
     def VCOstep(self):
+        
         c = self.countVal
         m = self.maxCountVal
         
+        
+        # trigger graph logic
         if c == 0.5*m:
             edgeFlag = -1
             
@@ -156,74 +157,73 @@ class classVCO:
         else:
             edgeFlag = 0
             
+        # Square graph logic    
+        if(c > 0.5*m):
+            squareGraph = 1
+        else:
+            squareGraph = 0   
+        
+        # Decrement of countval by 1     
         self.countVal = self.countVal - 1
         
+        # self.noise = self.noise + np.random.uniform(low=5, high=10, size=1)[0]
         
-        
-        # Resetting the countval
+        # Resetting step (AFTER ONE CYCLY)
         if self.countVal == 0:
-            self.countVal = m
+            self.countVal = m # Resetting the countval to max value
+            self.noise = self.noise + np.random.normal(loc=0, scale=0.5, size=1)[0] #Accumulating noise
+            # self.noise = self.noise + np.random.uniform(low=0, high=10,size=1)[0] #Accumulating noise
             
-        return edgeFlag   
-
-
-
-
     
+        return edgeFlag, squareGraph
+    
+    
+    # def randomNumber(self):
+    #     time_list = []
+    #     n = 2048
 
-s1 = classVCO(4,1) #Initializing classVCO
+    #     for i in range(0, n):
+    #         temp_rn = np.random.normal(loc=0, scale=0.5, size=1)
+    #         time_list.append(temp_rn) 
+            
+    #     time_array = np.array(time_list)
+        
+        
+
+
+
+     
+         
+s1 = classVCO(10,1) #Initializing classVCO
+
 
 
 tt = []
-tt_with_jitter = []
-pulse = []
+VCOout = []
 count = []
 
-for i in range(0,16,1): 
-    tt.append(i)
-    tt_with_jitter.append(i + np.random.normal(0, 0.5, 1))
-    pulse.append(s1.VCOstep())
-    count.append(s1.countVal)
-    
-    
-    # print("Time, countval , pulse : ",i, ", ", s1.countVal, ",", s1.VCOstep())
-
-        
-    
-plt.scatter(tt, pulse, marker='o')
-plt.scatter(tt_with_jitter, pulse, marker='o')
-     
+for i in range(0,50,1): 
        
+    # tt.append(i)
+    
+    temp_countval = s1.countVal
+    temp_noise = s1.noise
+    temp = s1.VCOstep()
+    
+    
+    VCOout.append(temp[1])
+    count.append(temp_countval)
+    
+    tt.append(i + temp_noise)
+    
+    print("Time, countval , VCOout : ",i + temp_noise, ", ", temp_countval, ",", temp)
+   
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+plt.plot(tt, VCOout, marker='o') 
+plt.xlim(100, 300) 
+plt.stem(tt, count) #marker='o')  
+plt.show()
 
 
 
