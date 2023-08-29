@@ -123,7 +123,77 @@ def facto(n):
 
 
 
+# Clock 29AUG2023
 
+# -*- coding: utf-8 -*-
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+
+class classVCO:
+    def __init__(self, freq, Ts):
+        self.freq = freq
+        self.Ts = Ts
+        self.maxCountVal = self.freq * self.Ts
+        self.countVal = self.maxCountVal
+     
+        
+     
+        
+    def VCOstep(self):
+        c = self.countVal
+        m = self.maxCountVal
+        
+        if c == 0.5*m:
+            edgeFlag = -1
+            
+        elif  c == m:
+            edgeFlag = 1
+            
+        else:
+            edgeFlag = 0
+            
+        self.countVal = self.countVal - 1
+        
+        
+        
+        # Resetting the countval
+        if self.countVal == 0:
+            self.countVal = m
+            
+        return edgeFlag   
+
+
+
+
+    
+
+s1 = classVCO(4,1) #Initializing classVCO
+
+
+tt = []
+tt_with_jitter = []
+pulse = []
+count = []
+
+for i in range(0,16,1): 
+    tt.append(i)
+    tt_with_jitter.append(i + np.random.normal(0, 0.5, 1))
+    pulse.append(s1.VCOstep())
+    count.append(s1.countVal)
+    
+    
+    # print("Time, countval , pulse : ",i, ", ", s1.countVal, ",", s1.VCOstep())
+
+        
+    
+plt.scatter(tt, pulse, marker='o')
+plt.scatter(tt_with_jitter, pulse, marker='o')
+     
+       
 
 
 
