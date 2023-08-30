@@ -129,6 +129,7 @@ def facto(n):
 
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 
 
 class classVCO: 
@@ -170,8 +171,11 @@ class classVCO:
         
         # Resetting step (AFTER ONE CYCLY)
         if self.countVal == 0:
-            self.countVal = m # Resetting the countval to max value
-            self.noise = self.noise + np.random.normal(loc=0, scale=0.5, size=1)[0] #Accumulating noise
+            
+            # random_noise = 0
+            random_noise = math.floor(np.random.normal(0,5,1)[0])
+            self.countVal = m + random_noise # Resetting the countval to max value
+            # self.noise = self.noise + np.random.normal(loc=0, scale=0.5, size=1)[0] #Accumulating noise
             # self.noise = self.noise + np.random.uniform(low=0, high=10,size=1)[0] #Accumulating noise
             
     
@@ -211,16 +215,17 @@ for i in range(0,50,1):
     temp = s1.VCOstep()
     
     
-    VCOout.append(temp[1])
+    VCOout.append(temp[1]) # Taking the square graph
     count.append(temp_countval)
     
-    tt.append(i + temp_noise)
+    tt.append(i)
     
-    print("Time, countval , VCOout : ",i + temp_noise, ", ", temp_countval, ",", temp)
+    print("Time, countval , VCOout : ",i , ", ", temp_countval, ",", temp)
    
 
 
-plt.plot(tt, VCOout, marker='o') 
+# plt.plot(tt, VCOout, marker='o') 
+plt.step(tt, VCOout)
 plt.xlim(100, 300) 
 plt.stem(tt, count) #marker='o')  
 plt.show()
