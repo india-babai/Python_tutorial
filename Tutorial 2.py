@@ -137,7 +137,7 @@ class classVCO:
     def __init__(self,freq,Ts):
         self.freq = freq
         self.Ts = Ts
-        self.maxCountVal = self.freq * self.Ts
+        self.maxCountVal = self.freq * self.Ts # Length of the period of the signal
         self.countVal = self.maxCountVal
         self.noise = 0
         
@@ -170,30 +170,24 @@ class classVCO:
         # self.noise = self.noise + np.random.uniform(low=5, high=10, size=1)[0]
         
         # Resetting step (AFTER ONE CYCLY)
-        if self.countVal == 0:
+        if self.countVal == 0: # this where a new cycle starts
+            
             
             # random_noise = 0
-            random_noise = math.floor(np.random.normal(0,5,1)[0])
-            self.countVal = m + random_noise # Resetting the countval to max value
+            random_noise = math.floor(np.random.normal(5,5,1)[0])
+            
+            self.maxCountVal = self.maxCountVal + random_noise
+            self.countVal = self.maxCountVal # Resetting the countval to max value so that the cycle restarts
+            
+            # random_noise = 0
+            # random_noise = math.floor(np.random.normal(0,5,1)[0])
+            
+            # self.countVal = m + random_noise # Resetting the countval to max value
             # self.noise = self.noise + np.random.normal(loc=0, scale=0.5, size=1)[0] #Accumulating noise
             # self.noise = self.noise + np.random.uniform(low=0, high=10,size=1)[0] #Accumulating noise
             
     
         return edgeFlag, squareGraph
-    
-    
-    # def randomNumber(self):
-    #     time_list = []
-    #     n = 2048
-
-    #     for i in range(0, n):
-    #         temp_rn = np.random.normal(loc=0, scale=0.5, size=1)
-    #         time_list.append(temp_rn) 
-            
-    #     time_array = np.array(time_list)
-        
-        
-
 
 
      
@@ -205,30 +199,107 @@ s1 = classVCO(10,1) #Initializing classVCO
 tt = []
 VCOout = []
 count = []
+max_count_val = []
 
-for i in range(0,50,1): 
+
+
+for i in range(0,1000,1): 
        
     # tt.append(i)
     
     temp_countval = s1.countVal
     temp_noise = s1.noise
+    temp_max_count_val = s1.maxCountVal
     temp = s1.VCOstep()
     
     
     VCOout.append(temp[1]) # Taking the square graph
     count.append(temp_countval)
     
+    max_count_val.append(temp_max_count_val)
+    
+    
     tt.append(i)
     
-    print("Time, countval , VCOout : ",i , ", ", temp_countval, ",", temp)
+    # print("Time, countval , VCOout : ",i , ", ", temp_countval, ",", temp)
    
 
 
 # plt.plot(tt, VCOout, marker='o') 
 plt.step(tt, VCOout)
-plt.xlim(100, 300) 
-plt.stem(tt, count) #marker='o')  
+# plt.xlim(100, 300) 
+# plt.stem(tt, count) #marker='o')  
 plt.show()
+
+
+
+
+
+
+
+# Period Count function
+
+def period_count(signal):
+    '''
+    Parameters
+    ----------
+    signal : Sequence of 1's and 0's
+        
+    
+    Returns
+    -------
+    T : number of complete cycles/period in the sequence
+
+    '''
+    
+    
+    period_count = 0
+    previous_value = None
+    
+    
+    list_of_cycle_lenghts = []
+    cycle_length = 0
+    
+    
+    for binary_value in signal:
+        
+        if previous_value is None:
+            previous_value = binary_value #Setting the initial state of previous_value
+        
+
+        
+        if previous_value == 0 and binary_value == 1 :
+            period_count = period_count + 1 # Transition from 0 to 1 indicates a complete cycle
+            
+            list_of_cycle_lenghts.append(cycle_length + 1)
+            
+            cycle_length = 0
+            
+            
+        else:
+            cycle_length = cycle_length + 1
+            
+            
+    
+        previous_value = binary_value # Storing the previous value at the end of the for loop
+
+
+    
+    
+    return period_count, list_of_cycle_lenghts
+
+
+t = period_count(VCOout)
+
+t[0]
+
+t[1]
+np.std(t[1])
+
+
+
+
+
 
 
 
