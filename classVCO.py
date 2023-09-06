@@ -4,25 +4,45 @@ Created on Fri Sep  1 14:46:38 2023
 
 @author: Rehana Sultana
 """
-
-import matplotlib.pyplot as plt
 import numpy as np
 import math
 
 
 class classVCO: 
     
+    
+    
+    # Initialize with freq, Ts
     def __init__(self,freq,Ts):
         self.freq = freq
         self.Ts = Ts
-        self.maxCountVal = self.freq * self.Ts # Length of the period of the signal
-        self.countVal = self.maxCountVal
-        self.noise = 0
-        #self.halfPeriod = 0
+        self.maxCountVal = self.freq * self.Ts  # maxCountVal : Length of the period of the signal
+        self.countVal = self.maxCountVal        # countVal : indicator at an instance (it changes everytime the VCOstep method is called )
+
      
+
+
+
+
     def VCOstep(self):
         
-        halfPeriod = math.floor(0.5*self.maxCountVal)
+        
+        '''
+        Parameters
+        ----------
+        self : an object/instance of classVCO
+            
+        
+        Returns
+        -------
+        edgeFlag : an instantaneous step pulse (for trigger graph it'll give 1, -1, or 0)\n
+        squareGraph : 1 or 0 from the square graph at any instance                                       
+        '''
+        
+
+        halfPeriod = math.floor(0.5*self.maxCountVal)   # halfPeriod : where 0's changes to 1's or vice versa
+        
+        
         
         # trigger graph logic
         if self.countVal == halfPeriod:
@@ -45,32 +65,40 @@ class classVCO:
         # Decrement of countval by 1     
         self.countVal = self.countVal - 1
         
-        # self.noise = self.noise + np.random.uniform(low=5, high=10, size=1)[0]
+
         
-        # Resetting step (AFTER ONE CYCLY)
+        # Resetting step (After one Cycle)
         if self.countVal == 0:# this where a new cycle starts
-            halfPeriod = math.floor(0.5*self.maxCountVal)
-            print(f"HALFPERIOD = {halfPeriod}") 
-            randomNoise = math.floor(np.random.normal(0,0.5,1)[0])
-            # halfPeriod = math.floor(0.5*self.maxCountVal)
-            # print(f"HALFPERIOD = {halfPeriod}" )
+        
+            # Period jitetr
+            # randomNoise = math.floor(np.random.normal(0, 5, 1)[0])
+            randomNoise = np.round(np.random.normal(0, 0.5, 1)[0],0)
+
+            # Resetting the countval to maxvalue so that the cycle restarts + some period jitters
+            self.countVal = self.maxCountVal + randomNoise
             
-            self.maxCountVal = self.maxCountVal + randomNoise
-            self.countVal = self.maxCountVal # Resetting the countval to max value so that the cycle restarts
-            # halfPeriod = math.floor(0.5*self.maxCountVal)
-            # print(f"HALFPERIOD = {halfPeriod}" )
-            
-            # random_noise = 0
-            # random_noise = math.floor(np.random.normal(0,5,1)[0])
-            
-            # self.countVal = m + random_noise # Resetting the countval to max value
-            # self.noise = self.noise + np.random.normal(loc=0, scale=0.5, size=1)[0] #Accumulating noise
-            # self.noise = self.noise + np.random.uniform(low=0, high=10,size=1)[0] #Accumulating noise
             
     
         return edgeFlag, squareGraph
-    
-    
 
-     
-         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
