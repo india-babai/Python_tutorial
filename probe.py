@@ -6,6 +6,8 @@ Created on Mon Sep  4 11:38:09 2023
 """
 
 import numpy as np
+import scipy.signal
+from numpy.fft import fft
 
 def completeClockSignal(objectVCO, totlLength = 1000):
     '''
@@ -40,6 +42,7 @@ def completeClockSignal(objectVCO, totlLength = 1000):
 
 # Measurement functions
 
+# Func:1
 def periodCount(signal):
     '''
     Parameters
@@ -92,6 +95,7 @@ def periodCount(signal):
 
 
 
+#Func:2
 def measureJitter(completeSignal, nominalPeriod):
     
     # Measuring periods
@@ -111,9 +115,28 @@ def measureJitter(completeSignal, nominalPeriod):
 
 
 
+#func:3
+def measurePSD(jitter):
+    
+    K = fft(jitter)
+    N = len(K)
+    # N = 5
+    psd = np.abs(K**2 / N )
+    
+    return psd
 
 
 
+#func:4
+def sdJitter(psd):
+    
+      N = len(psd)
+      total_power = np.sum(psd)
+      sd = np.sqrt(total_power / N)
+      
+      return sd
+
+ 
 
 
 

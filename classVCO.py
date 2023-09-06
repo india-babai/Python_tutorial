@@ -6,6 +6,7 @@ Created on Fri Sep  1 14:46:38 2023
 """
 import numpy as np
 import math
+import matplotlib.pyplot as plt
 
 
 class classVCO: 
@@ -41,7 +42,7 @@ class classVCO:
         
 
         halfPeriod = math.floor(0.5*self.maxCountVal)   # halfPeriod : where 0's changes to 1's or vice versa
-        
+        temp = np.random.normal(0, 0.8, 1)#[0]
         
         
         # trigger graph logic
@@ -71,8 +72,12 @@ class classVCO:
         if self.countVal == 0:# this where a new cycle starts
         
             # Period jitetr
-            # randomNoise = math.floor(np.random.normal(0, 5, 1)[0])
-            randomNoise = np.round(np.random.normal(0, 0.5, 1)[0],0)
+            temp = np.random.normal(0, 2, 1)#[0]
+            #print(f"random number ={randomNoise}")
+            #plt.stem(temp)
+            #randomNoise = math.floor(temp)
+            randomNoise = np.round(temp,0)
+            # print(f"random number ={randomNoise}")
 
             # Resetting the countval to maxvalue so that the cycle restarts + some period jitters
             self.countVal = self.maxCountVal + randomNoise
@@ -81,10 +86,7 @@ class classVCO:
     
         return edgeFlag, squareGraph
 
-
-
-
-
+        
 
 
 
