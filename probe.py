@@ -8,6 +8,7 @@ Created on Mon Sep  4 11:38:09 2023
 import numpy as np
 import scipy.signal
 from numpy.fft import fft
+# from sklearn.linear_model import LinearRegression
 
 def completeClockSignal(objectVCO, totlLength = 1000):
     '''
@@ -120,7 +121,6 @@ def measurePSD(jitter):
     
     K = fft(jitter)
     N = len(K)
-    # N = 5
     psd = np.abs(K**2 / N )
     
     return psd
@@ -129,37 +129,53 @@ def measurePSD(jitter):
 
 #func:4
 def sdJitter(psd):
+    '''
     
-      N = len(psd)
-      total_power = np.sum(psd)
-      sd = np.sqrt(total_power / N)
-      
-      return sd
+
+    Parameters
+    ----------
+    psd : Pass an array from PSD
+        DESCRIPTION.
+
+    Returns
+    -------
+    sd : TYPE
+        DESCRIPTION.
+
+    '''
+    
+    N = len(psd)
+    total_power = np.sum(psd)
+    sd = np.sqrt(total_power / N)
+    
+    return sd
 
  
 
+#func:5 => N-Period Jitter
+def measNPeriod(cmpleteSignal, freq, totalLength, nomPeriod):
+     
+    # N = int((totalLength/freq))
+    
+    periodInfo = periodCount(cmpleteSignal)
+    N = len(periodInfo[1])
 
+    #listOfPeriod = periodInfo[1]
+    
+    sumOfAbsoluteJitters = 0
 
+    for i in range(0, N):
+        sumOfAbsoluteJitters = sumOfAbsoluteJitters + periodInfo[1][i]
+        
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    NPeriodJitter = N*nomPeriod - sumOfAbsoluteJitters
+    K = fft(NPeriodJitter)
+    
+    
+    psd = np.abs(K**2 / N )
+    total_power = np.sum(psd)
+    sd = np.sqrt(total_power / N)
+    
+    return NPeriodJitter, psd,sd
 
 
